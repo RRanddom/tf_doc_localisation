@@ -62,7 +62,6 @@ def keypoints_heatmaps_model(features, labels, mode, params=None):
     tmp2 = gt_keypoints[:,:,1] / height 
     gt_keypoints_norm = tf.stack([tmp1, tmp2], axis=2)
 
-
     total_loss = 0
     total_mse_loss = 0
     total_reg_loss = 0
@@ -110,37 +109,3 @@ def keypoints_heatmaps_model(features, labels, mode, params=None):
             predictions=predictions,
             training_hooks=[loss_tensor],
             scaffold=scaffold)
-
-    
-# def main_network(features):
-#     """
-#     """
-#     is_training = False
-#     image_processed = preprocess(features)
-
-#     with tf.contrib.slim.arg_scope(mobilenet_v2.training_scope(is_training=is_training)):
-#         logits, endpoints = mobilenet_v2.mobilenet(image_processed, num_classes=None)
-    
-#     with tf.variable_scope("heats_map_regression"):
-#         endpoint = endpoints["layer_19"]
-#         net = tf.identity(endpoint, "mid_layer")
-#         keypoints_logits = tf.layers.conv2d(net, 4, kernel_size=1, activation=None, name="pred_keypoints")
-
-#         heatmaps = []
-#         keypoints = []
-#         activations = []
-
-#         for i in range(4):
-#             heatmap, keypoint = dsnt.dsnt(keypoints_logits[...,i])
-#             #_normalise_heatmap
-#             keypoint = (keypoint+1)/2
-
-#             heatmaps.append(heatmap)
-#             keypoints.append(keypoint)
-#             activations.append(keypoints_logits[...,i])
-        
-#     keypoints_pred = tf.stack(keypoints, axis=1, name="keypoints_pred")
-#     heatmaps_merge = tf.add_n(heatmaps, name="heatmaps")
-    
-
-#     return keypoints_pred, heatmaps_merge, heatmaps, activations

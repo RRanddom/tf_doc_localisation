@@ -46,9 +46,7 @@ def estimate_skew_angle(raw_image):
     _,degree = max(estimates)
 
     return degree
-
-
-
+    
 def main():
     all_images = glob("ocr_train_image_huawei/*.jpg")
     for image_name in all_images:

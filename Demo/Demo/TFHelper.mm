@@ -31,6 +31,13 @@ static const int wanted_input_height = 800;
 static const int wanted_input_channels = 3;
 
 
+@interface TFHelper()
+
+@property (nonatomic, assign) cv::Mat current_image;
+@property (nonatomic, assign) std::vector< std::vector<int> > keypoints;
+
+@end
+
 @implementation TFHelper
 
 static const int rec_min_width = 50;
@@ -92,14 +99,14 @@ static float32_t Y[25][19] = {
     {0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96},
 };
 
-+ (instancetype) sharedInstance {
-    static TFHelper *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
-    return sharedInstance;
-}
+//+ (instancetype) sharedInstance {
+//    static TFHelper *sharedInstance = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        sharedInstance = [[self alloc] init];
+//    });
+//    return sharedInstance;
+//}
 
 - (instancetype) init {
     if (self = [super init]) {
@@ -232,6 +239,66 @@ bool validate_coords(int *Xs, int *Ys) {
     return true;
 }
 
+- (void) rectifyReceipt:(cv::Mat&) resultMat {
+    
+    cv::Mat inputImage = self.current_image;
+    auto coord = self.keypoints;
+    
+    auto top_left = coord[0];
+    auto top_right = coord[1];
+    auto bottom_left = coord[2];
+    auto bottom_right = coord[3];
+    
+    top_left[0] = std::max(0, top_left[0]-10);
+    top_left[1] = std::max(0, top_left[1]-10);
+    
+    top_right[0] = std::min(wanted_input_width, top_right[0]+10);
+    top_right[1] = std::max(0, top_right[1]-10);
+    
+    bottom_left[0] = std::max(0, bottom_left[0]-10);
+    bottom_left[1] = std::min(wanted_input_height, bottom_left[1]+10);
+    
+    bottom_right[0] = std::min(wanted_input_width, bottom_right[0]+10);
+    bottom_right[1] = std::min(wanted_input_height, bottom_right[1]+10);
+    
+    auto left_x = (top_left[0] + bottom_left[0])/2.0;
+    auto top_y = (top_left[1] + top_right[1])/2.0;
+
+    auto right_x = (top_right[0] + bottom_right[0])/2.0;
+    auto bottom_y = (bottom_left[1] + bottom_right[1])/2.0;
+    
+    std::vector<double> coord1 {left_x, top_y};
+    std::vector<double> coord2 {right_x, top_y};
+    std::vector<double> coord3 {left_x, bottom_y};
+    std::vector<double> coord4 {right_x, bottom_y};
+    
+    std::vector< std::vector<double> > new_coord {coord1,coord2,coord3,coord4};
+
+    std::vector< cv::Point2f > srcPoints;
+    srcPoints.push_back(cv::Point2f(top_left[0], top_left[1]));
+    srcPoints.push_back(cv::Point2f(top_right[0], top_right[1]));
+    srcPoints.push_back(cv::Point2f(bottom_left[0], bottom_left[1]));
+    srcPoints.push_back(cv::Point2f(bottom_right[0], bottom_right[1]));
+
+    std::vector< cv::Point2f > dstPoints;
+    dstPoints.push_back(cv::Point2f(left_x, top_y));
+    dstPoints.push_back(cv::Point2f(right_x, top_y));
+    dstPoints.push_back(cv::Point2f(left_x, bottom_y));
+    dstPoints.push_back(cv::Point2f(right_x, bottom_y));
+    
+    cv::Mat transform = cv::findHomography(srcPoints, dstPoints, cv::RANSAC, 5.0);
+
+    cv::Mat outputImage;
+    cv::warpPerspective(inputImage, outputImage, transform, inputImage.size());
+    cv::Rect bounds(0, 0, inputImage.rows, inputImage.cols);
+    
+    cv::Rect crop(left_x, top_y, right_x-left_x, bottom_y-top_y);
+    auto cropped_img = outputImage(bounds & crop);
+    
+    resultMat = cropped_img.clone();
+}
+
+
 - (BOOL) inferImage:(const cv::Mat &)inputImage
         resultImage:(cv::Mat&)result
             heatmap:(cv::Mat&)heatmap {
@@ -239,7 +306,12 @@ bool validate_coords(int *Xs, int *Ys) {
     assert(inputImage.rows == wanted_input_height);
     assert(inputImage.cols == wanted_input_width);
     assert(inputImage.channels() == wanted_input_channels);
-    assert(inputImage.type() == CV_32FC3);
+    assert(inputImage.type() == CV_32FC3
+           );
+    
+    cv::Mat input_rgb;
+    inputImage.convertTo(input_rgb, CV_8UC3);
+    self.current_image = input_rgb;
     
     auto network_input = interpreter->inputs()[0];
     float32_t *network_input_ptr = interpreter->typed_tensor<float32_t>(network_input);
@@ -286,8 +358,18 @@ bool validate_coords(int *Xs, int *Ys) {
         cv::line(input_dummy, cv::Point(X_coords[1], Y_coords[1]), cv::Point(X_coords[3], Y_coords[3]), lineColor, 5);
         cv::line(input_dummy, cv::Point(X_coords[3], Y_coords[3]), cv::Point(X_coords[2], Y_coords[2]), lineColor, 5);
         cv::line(input_dummy, cv::Point(X_coords[2], Y_coords[2]), cv::Point(X_coords[0], Y_coords[0]), lineColor, 5);
+        
+        std::vector<int> p1{X_coords[0], Y_coords[0]};
+        std::vector<int> p2{X_coords[1], Y_coords[1]};
+        std::vector<int> p3{X_coords[2], Y_coords[2]};
+        std::vector<int> p4{X_coords[3], Y_coords[3]};
+        
+        std::vector< std::vector<int> > coord{p1,p2,p3,p4};
+        self.keypoints = coord;
+        
     }{
         // there is no rectangle,
+//        self.keypoints = NULL;
     }
     
     cv::Mat dummy = cv::Mat(output_h, output_w, CV_32FC4, heatmaps);
@@ -312,7 +394,7 @@ bool validate_coords(int *Xs, int *Ys) {
     input_dummy.convertTo(image_to_show, CV_8UC3);
     
     result = image_to_show.clone();
-    heatmap = _heatmap.clone();
+    heatmap = grayscale.clone();
     
     return NO;
     

@@ -20,10 +20,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *recView;
 @property (weak, nonatomic) IBOutlet UIImageView *heatmapView;
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *rectifyView;
+
 
 @property (nonatomic, strong) CvVideoCamera* videoCamera;
-//@property (nonatomic, assign) NSTimeInterval timestampForCallProcessImage;
 @property (nonatomic, assign) NSTimeInterval lastTime;
+@property (nonatomic, strong) TFHelper *helper;
 
 @end
 
@@ -47,6 +49,12 @@
     return _videoCamera;
 }
 
+- (TFHelper *) helper {
+    if (!_helper) {
+        _helper = [TFHelper new];
+    }return _helper;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -54,6 +62,7 @@
     CGFloat imageViewWidth = (containerViewWidth - 20) / 2;
     CGFloat topPadding = 150.0;
     
+    self.rectifyView.contentMode = UIViewContentModeScaleAspectFit;
     self.recView.frame = CGRectMake(0.0, topPadding, imageViewWidth, imageViewWidth*HW_RATIO);
     self.heatmapView.frame = CGRectMake(imageViewWidth+20, topPadding, imageViewWidth, imageViewWidth*HW_RATIO);
     
@@ -76,6 +85,17 @@
     [self.videoCamera stop];
 }
 
+- (IBAction)rectifyReceipt:(id)sender {
+    
+    cv::Mat outputMat;
+    [self.helper rectifyReceipt:outputMat];
+    UIImage *image = [OpenCVUtil UIImageFromCVMat:outputMat];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.rectifyView setImage:image];
+    });
+}
+
 - (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
     UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
     [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
@@ -93,7 +113,7 @@
     int origin_height = rawBgraImage.rows;
     int origin_width = rawBgraImage.cols;
     
-//     1. crop
+//     1. cropt
     cv::Rect bounds(0,0,origin_width,origin_height);
     cv::Rect crop;
     if (1.0*origin_height/origin_width > HW_RATIO) { // crop the vertical direction.
@@ -131,8 +151,7 @@
     cv::Mat result_image;
     cv::Mat heatmap;
     
-
-    [[TFHelper sharedInstance] inferImage:float_rgbImage resultImage:result_image heatmap:heatmap];
+    [self.helper inferImage:float_rgbImage resultImage:result_image heatmap:heatmap];
     
     NSTimeInterval current_time = [[NSDate date] timeIntervalSince1970];
     NSTimeInterval total_inference_time = current_time - startTime;

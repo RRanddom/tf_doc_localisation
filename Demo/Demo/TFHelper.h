@@ -6,13 +6,12 @@
 //  Copyright © 2019 zjcneil. All rights reserved.
 //
 
+#include <vector>
 #import <Foundation/Foundation.h>
 #import <opencv2/opencv.hpp>
-#include <vector>
 
 #include "tensorflow/contrib/lite/kernels/register.h"
 #include "tensorflow/contrib/lite/model.h"
-
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,11 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
     tflite::ops::builtin::BuiltinOpResolver resolver;
 }
 
-+ (instancetype) sharedInstance;
+//+ (instancetype) sharedInstance;
 
 - (BOOL) inferImage:(const cv::Mat &)inputImage
         resultImage:(cv::Mat&)result
             heatmap:(cv::Mat&)heatmap;
+
+- (void) rectifyReceipt:(cv::Mat&) resultMat;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

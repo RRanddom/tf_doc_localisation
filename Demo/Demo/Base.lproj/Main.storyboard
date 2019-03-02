@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Yr-38-Ljz">
+                                <rect key="frame" x="10" y="39" width="170" height="220"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.32415199531585992" green="0.79385436297812462" blue="1" alpha="0.84705882352941175" colorSpace="custom" customColorSpace="displayP3"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="njT-PW-tR1">
+                                <rect key="frame" x="189" y="39" width="170" height="220"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.46892439506153383" blue="0.86392567156102829" alpha="0.84705882352941175" colorSpace="custom" customColorSpace="displayP3"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g2-wL-L7g">
+                                <rect key="frame" x="10" y="602" width="120" height="40"/>
+                                <color key="backgroundColor" red="0.71675218089260206" green="1" blue="0.68193764140133051" alpha="0.84705882352941175" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="p3L-gm-FRw"/>
+                                    <constraint firstAttribute="height" constant="40" id="rFg-IR-ugM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1xE-Z4-rcB">
+                                <rect key="frame" x="10" y="542" width="80" height="40"/>
+                                <color key="backgroundColor" red="1" green="0.50274721010000001" blue="0.53227726929999997" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="edr-9m-ovs"/>
+                                    <constraint firstAttribute="width" constant="80" id="rO5-Vk-wcT"/>
+                                </constraints>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="rectifyReceipt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PgA-0o-UsJ"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="d3N-LW-oc0">
+                                <rect key="frame" x="50" y="342" width="300" height="300"/>
+                                <color key="backgroundColor" red="0.56512507609999996" green="0.64142460810000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="cr5-7E-YCr"/>
+                                    <constraint firstAttribute="height" constant="300" id="w0D-ne-zVZ"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="1xE-Z4-rcB" firstAttribute="leading" secondItem="6g2-wL-L7g" secondAttribute="leading" id="CsG-O7-Aft"/>
+                            <constraint firstItem="6g2-wL-L7g" firstAttribute="top" secondItem="1xE-Z4-rcB" secondAttribute="bottom" constant="20" id="RRd-Ra-T8R"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="d3N-LW-oc0" secondAttribute="trailing" constant="25" id="U8N-jj-lAd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6g2-wL-L7g" secondAttribute="bottom" constant="25" id="pRo-2F-NUR"/>
+                            <constraint firstItem="6g2-wL-L7g" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="w9R-wG-wJ0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="d3N-LW-oc0" secondAttribute="bottom" constant="25" id="wQ5-4R-cZd"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="heatmapView" destination="njT-PW-tR1" id="bLi-sp-As5"/>
+                        <outlet property="infoLabel" destination="6g2-wL-L7g" id="3TN-HB-jyM"/>
+                        <outlet property="recView" destination="3Yr-38-Ljz" id="pAK-RL-8YI"/>
+                        <outlet property="rectifyView" destination="d3N-LW-oc0" id="vXZ-XE-5av"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-631.20000000000005" y="-206.44677661169416"/>
+        </scene>
+    </scenes>
+</document>

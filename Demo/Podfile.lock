@@ -1,0 +1,20 @@
+PODS:
+  - OpenCV (2.4.11)
+  - TensorFlowLite (1.10.1)
+
+DEPENDENCIES:
+  - OpenCV (= 2.4.11)
+  - TensorFlowLite (= 1.10.1)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - OpenCV
+    - TensorFlowLite
+
+SPEC CHECKSUMS:
+  OpenCV: e3bb0bbaeec872d56315fdadce610f442d4239cd
+  TensorFlowLite: 6274f29bbf7e234edb3108f0f32728b5a4d53d77
+
+PODFILE CHECKSUM: 34a700b467aa03d9ab6721eb60aeb9080c7b8856
+
+COCOAPODS: 1.5.3

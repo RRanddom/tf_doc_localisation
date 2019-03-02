@@ -9,3 +9,6 @@ nohup.out
 # For mac
 .DS_Store
 data/*
+
+# iOS App
+Demo/Pods/*

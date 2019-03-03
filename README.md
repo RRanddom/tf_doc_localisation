@@ -23,13 +23,18 @@ midv_dir = MIDV_DATASET ## for example: /data/your_download_directory/midv_500
 
 1. python test.py
 
-###
 
 some test samples.
 
+#### case 1
+
 ![case1](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/raw_data/demo_images/case1.png)
 
+#### case 2
+
 ![case2](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/raw_data/demo_images/case2.png)
+
+#### failure case
 
 ![failure case](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/raw_data/demo_images/case3.png)
 

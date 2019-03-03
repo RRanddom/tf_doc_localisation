@@ -19,6 +19,18 @@ midv_dir = MIDV_DATASET ## for example: /data/your_download_directory/midv_500
 4. python receipt_dataset.py
 5. python train.py
 
+### how to test
+
+1. python test.py
+
+###
+
+some test samples.
+
+![test_image1](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/test_samples_600*800/5F.jpg)
+![heatmap](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/output/5F_heatmap.jpg)
+![processed image](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/output/5F.jpg)
+
 ### todo
 
 1. add evaluation code.

@@ -27,9 +27,11 @@ midv_dir = MIDV_DATASET ## for example: /data/your_download_directory/midv_500
 
 some test samples.
 
-![test_image1](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/test_samples_600*800/5F.jpg)
-![heatmap](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/output/5F_heatmap.jpg)
-![processed image](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/output/5F.jpg)
+![case1](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/raw_data/demo_images/case1.png)
+
+![case2](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/raw_data/demo_images/case2.png)
+
+![failure case](https://raw.githubusercontent.com/RRanddom/tf_doc_localisation/master/raw_data/demo_images/case3.png)
 
 ### todo
 

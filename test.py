@@ -58,7 +58,10 @@ if __name__ == "__main__":
         # get the transfrom matrix
         img_nd_bgr = cv2.cvtColor(img_nd, cv2.COLOR_RGB2BGR)
         H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
-        transfomed_image = cv2.warpPerspective(img_nd_bgr, H, tuple(reversed(img_nd_bgr.shape[:2])))
+        resize_factor = img_nd_bgr.shape[1] * 1.0 / (x2-x1)
+        height, width = img_nd_bgr.shape[:2]
+        new_height, new_width = int(height*resize_factor), int(width*resize_factor)
+        transfomed_image = cv2.warpPerspective(img_nd_bgr, H, (new_width, new_height))#tuple(reversed(img_nd_bgr.shape[:2]))
 
         base_name = os.path.basename(img_name).split('.')[0]
         cropped_image = transfomed_image[int(y1):int(y2), int(x1):int(x2), :]
